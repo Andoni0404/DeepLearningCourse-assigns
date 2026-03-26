@@ -11,12 +11,26 @@ from sklearn.model_selection import train_test_split
 from sklearn.preprocessing import StandardScaler
 from sklearn.metrics import mean_absolute_error, mean_squared_error, r2_score
 import optuna
+import random
 
 print("=== INICIANDO FASE 2: OPTIMIZACIÓN DE DEEP LEARNING CON OPTUNA ===")
 
 # ==========================================
 # 0. CARGA Y PREPROCESAMIENTO DE DATOS
 # ==========================================
+SEED = 42
+def set_seed(seed: int = 42) -> None:
+    random.seed(seed)
+    np.random.seed(seed)
+    torch.manual_seed(seed)
+    torch.cuda.manual_seed_all(seed)
+
+    # Reproducibilidad
+    torch.backends.cudnn.deterministic = True
+    torch.backends.cudnn.benchmark = False
+
+
+set_seed(SEED)
 directorio_actual = os.path.dirname(os.path.abspath(__file__))
 ruta_csv = os.path.join(directorio_actual, '../data/insurance.csv')
 df = pd.read_csv(ruta_csv)

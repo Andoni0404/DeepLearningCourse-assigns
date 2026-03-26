@@ -1,0 +1,11 @@
+{
+    "study_name": "optimizacion_dl_definitiva",
+    "best_trial_number": 271,
+    "best_validation_mae_optuna": 1320.748291015625,
+    "retraining_best_epoch": 84,
+    "validation_mae": 1478.072210023711,
+    "validation_r2": 0.8656435219735407,
+    "test_mae": 1750.9293590047807,
+    "test_r2": 0.8557650416757265,
+    "trainable_parameters": 5489
+}

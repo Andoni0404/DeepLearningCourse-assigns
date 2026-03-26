@@ -1,0 +1,13 @@
+{
+    "batch_size": 64,
+    "n_layers": 5,
+    "dropout_rate": 0.003997242561571155,
+    "n_units_l0": 23,
+    "n_units_l1": 53,
+    "n_units_l2": 19,
+    "n_units_l3": 39,
+    "n_units_l4": 45,
+    "lr": 0.06350257039990975,
+    "weight_decay": 0.00020444543410918936,
+    "optimizer": "SGD"
+}
