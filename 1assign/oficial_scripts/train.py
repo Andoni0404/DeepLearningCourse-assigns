@@ -1,14 +1,11 @@
 import torch
 import torch.nn as nn
 import optuna
-from torch.utils.tensorboard import SummaryWriter
 
 def train_and_evaluate(model, optimizer, criterion, train_loader, data, trial, max_epochs, device):
     best_val_mae = float("inf")
     X_val_device = data["X_val"].to(device)
     y_val_device = data["y_val"].to(device)
-
-    writer = SummaryWriter(log_dir=f"runs/optuna_study/trial_{trial.number}")
 
     for epoch in range(max_epochs):
         model.train()
@@ -37,16 +34,13 @@ def train_and_evaluate(model, optimizer, criterion, train_loader, data, trial, m
 
         if val_mae < best_val_mae:
             best_val_mae = val_mae
-            # Guardamos estas métricas para el reporte final
+            # Guardamos estas métricas para el reporte final de Optuna
             trial.set_user_attr("best_mse", val_mse)
             trial.set_user_attr("best_r2", val_r2)
 
-        writer.add_scalar("MAE/Validation", val_mae, epoch)
-        
+        # Optuna monitoriza el trial para ver si lo poda o sigue
         trial.report(val_mae, epoch)
         if trial.should_prune():
-            writer.close()
             raise optuna.TrialPruned()
 
-    writer.close()
     return best_val_mae

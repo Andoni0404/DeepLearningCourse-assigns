@@ -1,11 +1,10 @@
-import warnings
-from optuna_optimize import run_optimization  # ¡Directo, sin el src.!
+from optuna_optimize import run_optimization
 
-warnings.filterwarnings("ignore", category=UserWarning)
+def main():
+    print("Iniciando pipeline de Machine Learning para Seguros...")
+    # Ejecuta la búsqueda de hiperparámetros de Optuna
+    study = run_optimization()
+    print("¡Proceso terminado con éxito!")
 
 if __name__ == "__main__":
-    print("Iniciando el pipeline de Deep Learning...")
-    
-    study = run_optimization()
-    
-    print("\n¡Búsqueda completada!")
+    main()

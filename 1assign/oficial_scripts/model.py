@@ -5,13 +5,14 @@ import optuna
 
 def build_model(trial: optuna.Trial, input_size: int, device: torch.device) -> nn.Module:
     layers = []
-    n_layers = 5 #Segun los datos de los anteriores modelos es lo idoneo, además, para usar el
-                 #Differential Evolution with Hyperband (DEHB) Sampler, es recomendable usar una sola capa
+    
+    n_layers = trial.suggest_int("n_layers", 1, 3) 
     dropout_rate = trial.suggest_float("dropout_rate", 0.0, 0.1)
 
     in_features = input_size
     for i in range(n_layers):
-        out_features = trial.suggest_int(f"n_units_l{i}", 8, 128)
+        # Y máximo 64 neuronas por capa
+        out_features = trial.suggest_int(f"n_units_l{i}", 16, 64)
         layers.append(nn.Linear(in_features, out_features))
         layers.append(nn.ReLU())
         layers.append(nn.Dropout(dropout_rate))
@@ -19,7 +20,6 @@ def build_model(trial: optuna.Trial, input_size: int, device: torch.device) -> n
 
     layers.append(nn.Linear(in_features, 1))
     return nn.Sequential(*layers).to(device)
-
 def build_optimizer(trial: optuna.Trial, model: nn.Module):
     lr = trial.suggest_float("lr", 1e-4, 1e-1, log=True)
     weight_decay = trial.suggest_float("weight_decay", 1e-5, 1e-3, log=True)
